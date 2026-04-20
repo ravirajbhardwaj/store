@@ -3,12 +3,9 @@
 	import { Button } from '$lib/components/ui/button';
 	import { AspectRatio } from '$lib/components/ui/aspect-ratio';
 	import { Separator } from '$lib/components/ui/separator';
-	import { authClient } from '$lib/auth-client';
-
 	import { cart } from '$lib/stores/cart.svelte';
 
 	let { data } = $props();
-	const session = authClient.useSession();
 
 	let imagesLoaded = $state<Set<number>>(new Set());
 
@@ -50,8 +47,8 @@
 				</Button>
 
 				<!-- User — dropdown if logged in, redirect if not -->
-				{#if $session.data?.user.email}
-					<Button variant="ghost" size="icon-sm" aria-label="Sign in">
+				{#if data?.user.email}
+					<Button variant="ghost" href="/auth" size="icon-sm" aria-label="Sign in">
 						<UserIcon class="size-[1.2rem]" />
 					</Button>
 				{:else}

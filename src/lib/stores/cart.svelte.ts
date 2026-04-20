@@ -1,7 +1,9 @@
 type CartItem = { id: number; name: string; price: number; image: string };
 
+type CartItemWithQty = CartItem & { quantity: number };
+
 function createCart() {
-	let items = $state<CartItem[]>([]);
+	let items = $state<CartItemWithQty[]>([]);
 	let isOpen = $state(false);
 
 	return {
@@ -12,11 +14,19 @@ function createCart() {
 			return isOpen;
 		},
 		get total() {
-			return items.reduce((sum, i) => sum + i.price, 0);
+			return items.reduce((sum, i) => sum + i.price * i.quantity, 0);
+		},
+		get itemCount() {
+			return items.reduce((sum, i) => sum + i.quantity, 0);
 		},
 
 		isInCart(id: number) {
 			return items.some((i) => i.id === id);
+		},
+
+		getQuantity(id: number) {
+			const item = items.find((i) => i.id === id);
+			return item?.quantity ?? 0;
 		},
 
 		open() {
@@ -26,10 +36,23 @@ function createCart() {
 			isOpen = false;
 		},
 		add(product: CartItem) {
-			items = [...items, product];
+			const existing = items.find((i) => i.id === product.id);
+			if (existing) {
+				existing.quantity++;
+			} else {
+				items = [...items, { ...product, quantity: 1 }];
+			}
 		},
 		remove(product: CartItem) {
-			items = items.filter((i) => i.id !== product.id);
+			const existing = items.find((i) => i.id === product.id);
+			if (existing && existing.quantity > 1) {
+				existing.quantity--;
+			} else {
+				items = items.filter((i) => i.id !== product.id);
+			}
+		},
+		clear() {
+			items = [];
 		}
 	};
 }

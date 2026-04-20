@@ -108,8 +108,12 @@ export const productRelations = relations(product, ({ many }) => ({
 
 export const order = pgTable('order', {
 	id: text('id').primaryKey(),
-	productId: text('product_id').notNull(),
-	userId: text('user_id').notNull(),
+	productId: text('product_id')
+		.notNull()
+		.references(() => product.id, { onDelete: 'restrict' }),
+	userId: text('user_id')
+		.notNull()
+		.references(() => user.id, { onDelete: 'cascade' }),
 	status: text('status').notNull(),
 	amount: integer('amount').notNull(),
 	createdAt: timestamp('created_at').defaultNow().notNull(),

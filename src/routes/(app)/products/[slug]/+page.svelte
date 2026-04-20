@@ -11,8 +11,6 @@
 
 	let { data } = $props();
 
-	$inspect({ data });
-
 	let isLoading = $state(false);
 
 	onMount(() => {
