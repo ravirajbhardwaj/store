@@ -13,7 +13,6 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 	return {
 		products,
-		user: locals.user,
-		session: locals.session
+		user: locals.user ?? null
 	};
 };

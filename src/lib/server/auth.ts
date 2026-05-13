@@ -10,7 +10,9 @@ import { Resend } from 'resend';
 import { RESEND_API_KEY, BASE_URL } from '$env/static/private';
 
 if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_CLIENT_SECRET) {
-	throw new Error('Missing Google OAuth credentials. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env');
+	throw new Error(
+		'Missing Google OAuth credentials. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET in .env'
+	);
 }
 
 if (!RESEND_API_KEY) {

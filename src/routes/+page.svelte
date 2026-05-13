@@ -2,7 +2,6 @@
 	import { ShoppingCartIcon, UserIcon, UserPlus } from '@lucide/svelte/icons';
 	import { Button } from '$lib/components/ui/button';
 	import { AspectRatio } from '$lib/components/ui/aspect-ratio';
-	import { Separator } from '$lib/components/ui/separator';
 	import { cart } from '$lib/stores/cart.svelte';
 
 	let { data } = $props();
@@ -46,8 +45,7 @@
 					<span class="sr-only">Open cart</span>
 				</Button>
 
-				<!-- User — dropdown if logged in, redirect if not -->
-				{#if data?.user.email}
+				{#if data?.user?.email}
 					<Button variant="ghost" href="/auth" size="icon-sm" aria-label="Sign in">
 						<UserIcon class="size-[1.2rem]" />
 					</Button>
@@ -62,7 +60,7 @@
 
 	<!-- Product Grid -->
 	<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-		{#each data.products as product (product.id)}
+		{#each data?.products as product (product.id)}
 			<a
 				href="/products/{product.slug}"
 				class="group block rounded-2xl transition-all duration-300 hover:-translate-y-1"

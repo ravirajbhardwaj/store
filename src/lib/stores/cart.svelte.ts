@@ -1,4 +1,4 @@
-type CartItem = { id: number; name: string; price: number; image: string };
+type CartItem = { id: string; name: string; price: number; image: string };
 
 type CartItemWithQty = CartItem & { quantity: number };
 
@@ -20,11 +20,11 @@ function createCart() {
 			return items.reduce((sum, i) => sum + i.quantity, 0);
 		},
 
-		isInCart(id: number) {
+		isInCart(id: string) {
 			return items.some((i) => i.id === id);
 		},
 
-		getQuantity(id: number) {
+		getQuantity(id: string) {
 			const item = items.find((i) => i.id === id);
 			return item?.quantity ?? 0;
 		},

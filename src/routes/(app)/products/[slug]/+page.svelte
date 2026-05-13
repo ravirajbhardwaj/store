@@ -28,9 +28,8 @@
 	});
 
 	async function handleCheckout() {
-		console.log('user', data?.user);
-		if (!data?.user.email) {
-			window.location.href = '/auth'; // 👈 goes to auth page
+		if (!data.user?.email) {
+			window.location.href = '/auth';
 			return;
 		}
 
@@ -48,7 +47,7 @@
 						zipcode: ''
 					},
 					customer: {
-						email: data.user.email, // ✅ safe now
+						email: data.user.email,
 						name: data.user.name
 					},
 					product_id: data.product.id,
@@ -57,16 +56,19 @@
 				})
 			});
 
-			const { checkout_url } = await res.json();
-			await DodoPayments.Checkout.open({ checkoutUrl: checkout_url });
-			isLoading = false;
+			const checkoutData = (await res.json()) as { checkout_url?: string };
+			if (!checkoutData.checkout_url) {
+				throw new Error('Invalid checkout response');
+			}
+			await DodoPayments.Checkout.open({ checkoutUrl: checkoutData.checkout_url });
 		} catch (err) {
 			console.error('Checkout API error:', err);
+		} finally {
 			isLoading = false;
 		}
 	}
 
-	import { cart } from '$lib/stores/cart.svelte.ts';
+	import { cart } from '$lib/stores/cart.svelte';
 
 	let activeTab = $state('description');
 </script>
